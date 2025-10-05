@@ -1,124 +1,197 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixel Flower Garden</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <title>A Gift for Ms. Ruby Lieu</title>
     <style>
-        /* Import font pixel từ Google Fonts */
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
-        /* Thiết lập lại các thuộc tính mặc định và kiểu font */
-        body, html {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            background-color: #f2a9c1; /* Màu nền hồng nhạt dự phòng */
+        
+        body, html { 
+            height: 100%; margin: 0; padding: 0; 
+            overflow: hidden; background-color: #a2d2ff; 
+            touch-action: none;
+        }
+        canvas { 
+            display: block; position: absolute; 
+            top: 0; left: 0; z-index: 1; 
+        }
+        .ui-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center; text-align: center;
+            z-index: 100; pointer-events: none;
+        }
+        .content { 
+            color: white; 
             font-family: 'Press Start 2P', cursive;
-            overflow: hidden; /* Ẩn thanh cuộn */
+            max-width: 95%;
         }
-
-        /* Vùng chứa toàn bộ cảnh */
-        .garden-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        /* Lớp chứa nội dung chính (tiêu đề) */
-        .content {
-            z-index: 10; /* Đảm bảo nội dung luôn ở trên cùng */
-            color: white;
-            text-shadow: 2px 2px 0 #8b3c58, 4px 4px 0 #5c283a;
-        }
-
-        h1 {
-            font-size: clamp(1.5rem, 5vw, 2.5rem); /* Kích thước font linh hoạt */
+        /* THAY ĐỔI CSS: Cỡ chữ đã được làm nhỏ lại */
+        h1 { 
+            font-size: clamp(0.9rem, 4vw, 1.5rem); /* <-- Chữ nhỏ hơn */
             margin: 0;
+            line-height: 1.4;
+            animation: text-glow 3s infinite alternate;
         }
-
-        p {
-            font-size: clamp(0.8rem, 2.5vw, 1rem); /* Kích thước font linh hoạt */
-            margin-top: 10px;
+        p { 
+            font-size: clamp(0.7rem, 3vw, 1.1rem); /* <-- Chữ nhỏ hơn */
+            margin-top: 12px; /* <-- Giảm khoảng cách */
+            opacity: 0.9; 
+            letter-spacing: 1px;
         }
-
-        /* Định nghĩa chuyển động lặp lại cho nền */
-        @keyframes scroll-background {
-            from {
-                transform: translateX(0);
-            }
-            to {
-                transform: translateX(-50%); /* Dịch chuyển 50% vì ảnh rộng 200% */
-            }
+        @keyframes text-glow {
+            from { text-shadow: 2px 2px 0 #c78298, 4px 4px 0 #a8647a, 0 0 10px #ffc8dd; }
+            to { text-shadow: 2px 2px 0 #c78298, 4px 4px 0 #a8647a, 0 0 20px #ffc8dd, 0 0 35px #ffc8dd; }
         }
-
-        /* Lớp nền động chung */
-        .animated-layer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 200%; /* Rộng gấp đôi để tạo hiệu ứng lặp mượt mà */
-            height: 100%;
-            background-repeat: repeat-x;
-            background-position: 0 100%; /* Căn nền ở dưới cùng */
-
-            /* Giữ cho ảnh pixel sắc nét, không bị mờ */
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;
-            image-rendering: pixelated;
-        }
-
-        /* Các lớp nền cụ thể với hình ảnh đã được nhúng (Base64) */
-        #layer-1-sky {
-            background: linear-gradient(to bottom, #ebb8cf, #f2a9c1); /* Bầu trời hồng */
-            z-index: 1;
-        }
-
-        #layer-2-hills {
-            /* Hình ảnh pixel ngọn đồi */
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAABNklEQVR4nO3cwQ2AMBQFUR/g/48YkUBWqoF2j9yBqZv5nNnZe2ADaE5gQGACAxMYmMDABAYmMDChAeg+3p4/A/B+gYkMDAxgYAIHEXgMgYkMDAxgYAKjExiYwMDABAYmMLB4AYkJDAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxiYv2fOAG4AAu11pXGSAAAAAElFTkSuQmCC');
-            background-size: auto 40%; /* Kích thước ngọn đồi */
-            animation: scroll-background 60s linear infinite; /* Chuyển động chậm nhất */
-            z-index: 2;
-        }
-
-        #layer-3-trees {
-            /* Hình ảnh pixel cây cối */
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAACYUlEQVR4nO3dUW7DMAwFUZ/LgXNu3Ue5QsaTBCgqWSRI+b9S+oMUKQkQ32gCAxMYmMDABAYmMDDBAIEfP+b779b+/H6/f7+/9v3+9hP8nwsMDAxgYAIjExtgYAIHEXgMgYkMDAxgYAKDGxiYwMAEBhZPgIAEBiYwMIGAxgYGJjAwgYEFBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxiYwMD+BQYmMDAAgYkNDAxgYAKjExiYwMD+BQYmMDAAgYkNDAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxiYwMAEBhZPgIAEBiYwMIGAxgYGJjAwgYEFBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxiYv2fOAI00Am/PAm+CAAAAAElFTkSuQmCC');
-            background-size: auto 60%; /* Kích thước cây */
-            animation: scroll-background 30s linear infinite; /* Chuyển động vừa phải */
-            z-index: 3;
-        }
-
-        #layer-4-ground {
-            /* Hình ảnh pixel vườn hoa/mặt đất */
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAABaklEQVR4nO3dQQ2AMBQFURx/yX/o29CCZqGdR+7AvZm/LzMz98AG0JzAQIAJDAxgYAIJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDBhYwJ/zhyf2N4R7wAAAABJRU5ErkJggg==');
-            background-size: auto 25%; /* Kích thước mặt đất */
-            animation: scroll-background 15s linear infinite; /* Chuyển động nhanh nhất */
-            z-index: 4;
-        }
-
     </style>
 </head>
 <body>
-
-    <div class="garden-container">
-        <!-- Các lớp nền động -->
-        <div class="animated-layer" id="layer-1-sky"></div>
-        <div class="animated-layer" id="layer-2-hills"></div>
-        <div class="animated-layer" id="layer-3-trees"></div>
-        <div class="animated-layer" id="layer-4-ground"></div>
-
-        <!-- Nội dung hiển thị -->
+    <canvas id="gardenCanvas"></canvas>
+    <div class="ui-container">
         <div class="content">
-            <h1>Pixel Garden</h1>
-            <p>Welcome!</p>
+            <h1>Wishing you all the best</h1>
+            <p>Ms. Ruby Lieu</p>
         </div>
     </div>
 
+    <script>
+        // PHẦN SCRIPT GIỮ NGUYÊN NHƯ CŨ
+        const canvas = document.getElementById('gardenCanvas');
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+
+        let width, height;
+        const pixelSize = 3;
+        const sceneWidthMultiplier = 4;
+
+        const palette = { sky_top: '#a2d2ff', sky_bottom: '#fbc4d8', sun: '#ffee99', mountain_far: '#d4b2d8', ground: '#ffc8dd', ground_dark: '#f4b2d2', tree_trunk: '#a56a57', tree_leaves: '#ff99c8', tree_leaves_dark: '#f080b4', cloud_base: '#ffffff', cloud_shadow: '#e0e0e0', heart: '#ff4d6d', flower_pink: '#ff8fab', flower_yellow: '#ffd966', flower_stem: '#80bfa0', flower_leaf: '#76c893', butterfly_wing: '#ffca3a', butterfly_body: '#8d6e63' };
+        const sprites = { flower: { c:[palette.flower_pink, palette.flower_yellow, palette.flower_stem, palette.flower_leaf], m:[[0,2,0],[4,1,4],[0,3,0]]}, heart: { c:[palette.heart], m:[[0,1,0,1,0],[1,1,1,1,1],[0,1,1,1,0],[0,0,1,0,0]]}, butterfly: { c:[palette.butterfly_wing, palette.butterfly_body], frames: [ [[0,2,0],[1,2,1],[0,1,0]], [[1,0,1],[0,2,0],[1,0,1]] ] } };
+
+        let layers = [];
+        let bobAngle = 0, frameCount = 0;
+
+        function drawProceduralHills(item) {
+            ctx.fillStyle = item.color; ctx.beginPath(); ctx.moveTo(Math.round(item.x), Math.round(item.y));
+            for(let i=0; i<item.points.length; i++) {
+                const p = item.points[i], yBob = Math.sin(item.bob + bobAngle * 0.2 + i) * 10;
+                ctx.quadraticCurveTo(Math.round(item.x + p.cpx), Math.round(item.y + p.cpy + yBob), Math.round(item.x + p.x), Math.round(item.y + p.y));
+            }
+            ctx.lineTo(Math.round(item.x + item.w), height); ctx.lineTo(Math.round(item.x), height); ctx.closePath(); ctx.fill();
+        }
+
+        function drawProceduralCloud(item) {
+            for(const circle of item.circles) {
+                const x = Math.round(item.x + circle.x), y = Math.round(item.y + circle.y + Math.sin(item.bob + bobAngle) * 5);
+                ctx.fillStyle = circle.shadow ? palette.cloud_shadow : palette.cloud_base;
+                ctx.beginPath(); ctx.arc(x, y, circle.r, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        function drawProceduralTree(item) {
+            const yBob = Math.sin(item.bob + bobAngle) * pixelSize * 3;
+            ctx.save(); ctx.translate(Math.round(item.x), Math.round(item.y + yBob)); ctx.scale(item.flip, 1);
+            const s = pixelSize * item.scale;
+            ctx.fillStyle = palette.tree_trunk; ctx.fillRect(s*2, s*8, s*2, s*5);
+            ctx.fillStyle = palette.tree_leaves_dark; ctx.beginPath(); ctx.arc(s*3, s*4, s*5, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = palette.tree_leaves; ctx.beginPath(); ctx.arc(s*3, s*2.5, s*4.5, 0, Math.PI*2); ctx.fill();
+            ctx.restore();
+        }
+        
+        function drawSprite(item) {
+            const sprite = sprites[item.type];
+            const yBob = Math.sin(item.bob + bobAngle) * pixelSize * 2;
+            const flutter = item.type === 'butterfly' ? Math.sin(item.bob + bobAngle * 2) * 15 : 0;
+            const frame = item.type === 'butterfly' ? Math.floor(frameCount / 10) % sprite.frames.length : 0;
+            const matrix = sprite.frames ? sprite.frames[frame] : sprite.m;
+            const scaledPixelSize = pixelSize * item.scale;
+            ctx.save();
+            ctx.translate(Math.round(item.x), Math.round(item.y + yBob + flutter));
+            ctx.scale(item.flip, 1);
+            for(let r=0; r < matrix.length; r++){
+                for(let c=0; c < matrix[r].length; c++){
+                    if(matrix[r][c] > 0) {
+                        ctx.fillStyle = sprite.c[matrix[r][c]-1];
+                        ctx.fillRect(c*scaledPixelSize, r*scaledPixelSize, scaledPixelSize, scaledPixelSize);
+                    }
+                }
+            }
+            ctx.restore();
+        }
+
+        function createScene() {
+            layers = [ { items: [], speed: 10 }, { items: [], speed: 20 }, { items: [], speed: 80 }, { items: [], speed: 120 }, { items: [], speed: 180 }];
+            const groundLevel = height - 60; const sceneWidth = width * sceneWidthMultiplier;
+            
+            const isMobile = window.innerWidth < 768;
+            const hillCount = isMobile ? 10 : 20;
+            const cloudCount = isMobile ? 15 : 25;
+            const sceneryCount = isMobile ? 120 : 250;
+            const butterflyCount = isMobile ? 5 : 10;
+            
+            for(let i=0; i < hillCount; i++) {
+                const item = { isHill: true, color: palette.mountain_far, x: i * (sceneWidth/hillCount), y: groundLevel-100, w: sceneWidth/hillCount + 2, bob: Math.random()*Math.PI*2, points:[] };
+                for(let j=0; j<3; j++) item.points.push({x: item.w*(j+1)/3, y:-Math.random()*60, cpx: item.w*j/3 + 20, cpy:-Math.random()*80});
+                layers[0].items.push(item);
+            }
+            for (let i = 0; i < cloudCount; i++) {
+                const item = { isCloud: true, x: Math.random()*sceneWidth, y: Math.random()*height*0.4, bob: Math.random()*Math.PI*2, circles:[] };
+                for(let j=0; j<5; j++) item.circles.push({x: (Math.random()-0.5)*80, y: (Math.random()-0.5)*20, r: 15+Math.random()*20, shadow: Math.random() > 0.8});
+                layers[1].items.push(item);
+            }
+            for (let i = 0; i < sceneryCount; i++) {
+                const x=Math.random()*sceneWidth, scale=0.9+Math.random()*0.4, flip=Math.random()>0.5?1:-1, bob=Math.random()*Math.PI*2, r=Math.random(), treeHeight=12*pixelSize*scale;
+                if (r<0.6) { layers[2].items.push({ type:'tree', x, y:groundLevel-treeHeight, scale, flip, bob }); }
+                else if (r<0.9) { layers[3].items.push({ type:'flower', x, y:groundLevel-10*scale, scale, flip, bob }); }
+                else { layers[3].items.push({ type:'heart', x, y:groundLevel, scale:0.8+Math.random()*0.5, bob, isHeart:true }); }
+            }
+            for (let i=0; i<butterflyCount; i++) { layers[4].items.push({ type:'butterfly', x:Math.random()*sceneWidth, y:groundLevel-Math.random()*height*0.5, scale:1.5+Math.random(), bob:Math.random()*Math.PI*2, flip:Math.random()>0.5?1:-1 }); }
+        }
+        
+        function animate() {
+            frameCount++;
+            bobAngle = (bobAngle + 0.02) % (Math.PI * 2);
+            const sceneWidth = width * sceneWidthMultiplier;
+
+            const skyGradient = ctx.createLinearGradient(0,0,0,height);
+            skyGradient.addColorStop(0, palette.sky_top); skyGradient.addColorStop(1, palette.sky_bottom);
+            ctx.fillStyle = skyGradient; ctx.fillRect(0, 0, width, height);
+            
+            const celestialX = width*0.8, celestialY = height*0.15;
+            ctx.fillStyle = palette.sun;
+            ctx.beginPath(); ctx.arc(celestialX, celestialY, 40, 0, 2*Math.PI); ctx.fill();
+            
+            layers.forEach(layer => {
+                layer.items.forEach(item => {
+                    item.x -= layer.speed * 0.016;
+                    if (item.x < -item.w - 100) { item.x += sceneWidth + item.w + 100; }
+                    else if (item.x < -300) { item.x += sceneWidth + 300; }
+                    if (item.isHeart) { 
+                        item.y -= 0.5;
+                        if(item.y < -50) item.y = height-60;
+                    }
+                    if (item.isHill) { drawProceduralHills(item); }
+                    else if (item.isCloud) { drawProceduralCloud(item); }
+                    else if (item.type === 'tree') { drawProceduralTree(item); }
+                    else if (item.type) { drawSprite(item); }
+                });
+            });
+            
+            ctx.fillStyle = palette.ground; ctx.fillRect(0, height - 60, width, 60);
+            ctx.fillStyle = palette.ground_dark; ctx.fillRect(0, height - 50, width, 10);
+            
+            requestAnimationFrame(animate);
+        }
+
+        let resizeTimer;
+        function debouncedResize() { clearTimeout(resizeTimer); resizeTimer = setTimeout(resize, 100); }
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            ctx.imageSmoothingEnabled = false; createScene();
+        }
+        window.addEventListener('resize', debouncedResize);
+        resize();
+        requestAnimationFrame(animate);
+    </script>
 </body>
 </html>
