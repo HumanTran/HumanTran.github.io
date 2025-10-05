@@ -72,31 +72,31 @@
             image-rendering: pixelated;
         }
 
-        /* Các lớp nền cụ thể với hình ảnh đã được nhúng (Base64) */
+        /* CÁC LỚP NỀN ĐÃ ĐƯỢC THAY ĐỔI */
         #layer-1-sky {
             background: linear-gradient(to bottom, #ebb8cf, #f2a9c1); /* Bầu trời hồng */
             z-index: 1;
         }
 
         #layer-2-hills {
-            /* Hình ảnh pixel ngọn đồi */
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAABNklEQVR4nO3cwQ2AMBQFUR/g/48YkUBWqoF2j9yBqZv5nNnZe2ADaE5gQGACAxMYmMDABAYmMDChAeg+3p4/A/B+gYkMDAxgYAIHEXgMgYkMDAxgYAKjExiYwMDABAYmMLB4AYkJDAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxiYv2fOAG4AAu11pXGSAAAAAElFTkSuQmCC');
+            /* Hình ảnh pixel ngọn đồi từ link ngoài */
+            background-image: url('https://i.ibb.co/6ZzJqYq/pixel-hills-pink.png');
             background-size: auto 40%; /* Kích thước ngọn đồi */
             animation: scroll-background 60s linear infinite; /* Chuyển động chậm nhất */
             z-index: 2;
         }
 
         #layer-3-trees {
-            /* Hình ảnh pixel cây cối */
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAACYUlEQVR4nO3dUW7DMAwFUZ/LgXNu3Ue5QsaTBCgqWSRI+b9S+oMUKQkQ32gCAxMYmMDABAYmMDDBAIEfP+b779b+/H6/f7+/9v3+9hP8nwsMDAxgYAIjExtgYAIHEXgMgYkMDAxgYAKDGxiYwMAEBhZPgIAEBiYwMIGAxgYGJjAwgYEFBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxiYwMD+BQYmMDAAgYkNDAxgYAKjExiYwMD+BQYmMDAAgYkNDAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxiYwMAEBhZPgIAEBiYwMIGAxgYGJjAwgYEFBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxiYv2fOAI00Am/PAm+CAAAAAElFTkSuQmCC');
+            /* Hình ảnh pixel cây cối từ link ngoài */
+            background-image: url('https://i.ibb.co/h7gJj4H/pixel-trees-pink.png');
             background-size: auto 60%; /* Kích thước cây */
             animation: scroll-background 30s linear infinite; /* Chuyển động vừa phải */
             z-index: 3;
         }
 
         #layer-4-ground {
-            /* Hình ảnh pixel vườn hoa/mặt đất */
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAABaklEQVR4nO3dQQ2AMBQFURx/yX/o29CCZqGdR+7AvZm/LzMz98AG0JzAQIAJDAxgYAIJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDBhYwJ/zhyf2N4R7wAAAABJRU5ErkJggg==');
+            /* Hình ảnh pixel vườn hoa/mặt đất từ link ngoài */
+            background-image: url('https://i.ibb.co/F8q1fNf/pixel-flowers-pink.png');
             background-size: auto 25%; /* Kích thước mặt đất */
             animation: scroll-background 15s linear infinite; /* Chuyển động nhanh nhất */
             z-index: 4;
