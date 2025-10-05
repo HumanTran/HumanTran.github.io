@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Flower Garden</title>
+    <style>
+        /* Import font pixel từ Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        /* Thiết lập lại các thuộc tính mặc định và kiểu font */
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #f2a9c1; /* Màu nền hồng nhạt dự phòng */
+            font-family: 'Press Start 2P', cursive;
+            overflow: hidden; /* Ẩn thanh cuộn */
+        }
+
+        /* Vùng chứa toàn bộ cảnh */
+        .garden-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Lớp chứa nội dung chính (tiêu đề) */
+        .content {
+            z-index: 10; /* Đảm bảo nội dung luôn ở trên cùng */
+            color: white;
+            text-shadow: 2px 2px 0 #8b3c58, 4px 4px 0 #5c283a;
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 5vw, 2.5rem); /* Kích thước font linh hoạt */
+            margin: 0;
+        }
+
+        p {
+            font-size: clamp(0.8rem, 2.5vw, 1rem); /* Kích thước font linh hoạt */
+            margin-top: 10px;
+        }
+
+        /* Định nghĩa chuyển động lặp lại cho nền */
+        @keyframes scroll-background {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-50%); /* Dịch chuyển 50% vì ảnh rộng 200% */
+            }
+        }
+
+        /* Lớp nền động chung */
+        .animated-layer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%; /* Rộng gấp đôi để tạo hiệu ứng lặp mượt mà */
+            height: 100%;
+            background-repeat: repeat-x;
+            background-position: 0 100%; /* Căn nền ở dưới cùng */
+
+            /* Giữ cho ảnh pixel sắc nét, không bị mờ */
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
+
+        /* Các lớp nền cụ thể với hình ảnh đã được nhúng (Base64) */
+        #layer-1-sky {
+            background: linear-gradient(to bottom, #ebb8cf, #f2a9c1); /* Bầu trời hồng */
+            z-index: 1;
+        }
+
+        #layer-2-hills {
+            /* Hình ảnh pixel ngọn đồi */
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAABNklEQVR4nO3cwQ2AMBQFUR/g/48YkUBWqoF2j9yBqZv5nNnZe2ADaE5gQGACAxMYmMDABAYmMDChAeg+3p4/A/B+gYkMDAxgYAIHEXgMgYkMDAxgYAKjExiYwMDABAYmMLB4AYkJDAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCQxMYGACgxsYwMAEBiYwsHgBiQkMDAxgYAKDGxiYv2fOAG4AAu11pXGSAAAAAElFTkSuQmCC');
+            background-size: auto 40%; /* Kích thước ngọn đồi */
+            animation: scroll-background 60s linear infinite; /* Chuyển động chậm nhất */
+            z-index: 2;
+        }
+
+        #layer-3-trees {
+            /* Hình ảnh pixel cây cối */
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAACYUlEQVR4nO3dUW7DMAwFUZ/LgXNu3Ue5QsaTBCgqWSRI+b9S+oMUKQkQ32gCAxMYmMDABAYmMDDBAIEfP+b779b+/H6/f7+/9v3+9hP8nwsMDAxgYAIjExtgYAIHEXgMgYkMDAxgYAKDGxiYwMAEBhZPgIAEBiYwMIGAxgYGJjAwgYEFBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxiYwMD+BQYmMDAAgYkNDAxgYAKjExiYwMD+BQYmMDAAgYkNDAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxiYwMAEBhZPgIAEBiYwMIGAxgYGJjAwgYEFBiYwsHgBiQkMDAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxjAwAQGJjCweAGJCAxgYAKDGxiYv2fOAI00Am/PAm+CAAAAAElFTkSuQmCC');
+            background-size: auto 60%; /* Kích thước cây */
+            animation: scroll-background 30s linear infinite; /* Chuyển động vừa phải */
+            z-index: 3;
+        }
+
+        #layer-4-ground {
+            /* Hình ảnh pixel vườn hoa/mặt đất */
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAABaklEQVR4nO3dQQ2AMBQFURx/yX/o29CCZqGdR+7AvZm/LzMz98AG0JzAQIAJDAxgYAIJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDAygAEBy782bJb/4mMDABAImMDAxgQQGJjAwgYQJDAxgYAIJDBhYwJ/zhyf2N4R7wAAAABJRU5ErkJggg==');
+            background-size: auto 25%; /* Kích thước mặt đất */
+            animation: scroll-background 15s linear infinite; /* Chuyển động nhanh nhất */
+            z-index: 4;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="garden-container">
+        <!-- Các lớp nền động -->
+        <div class="animated-layer" id="layer-1-sky"></div>
+        <div class="animated-layer" id="layer-2-hills"></div>
+        <div class="animated-layer" id="layer-3-trees"></div>
+        <div class="animated-layer" id="layer-4-ground"></div>
+
+        <!-- Nội dung hiển thị -->
+        <div class="content">
+            <h1>Pixel Garden</h1>
+            <p>Welcome!</p>
+        </div>
+    </div>
+
+</body>
+</html>
